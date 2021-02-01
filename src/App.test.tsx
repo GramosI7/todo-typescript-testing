@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 
 describe("Renders default screen", () => {
@@ -19,7 +19,9 @@ describe("Renders default screen", () => {
     const todos = screen.getByTestId("todos");
     expect(todos.children.length).toBe(0);
   });
+});
 
+describe("Todolist functionality", () => {
   test("Add a todo", () => {
     render(<App />);
 
@@ -33,7 +35,7 @@ describe("Renders default screen", () => {
     expect(screen.getByText(/Buy bread/i)).toBeInTheDocument();
   });
 
-  test("Check & uncheck a todo", () => {
+  test("Check & uncheck a todo", async () => {
     render(<App />);
 
     const input = screen.getByPlaceholderText(/add todo/i);
@@ -46,6 +48,10 @@ describe("Renders default screen", () => {
 
     const checkbox = screen.getByLabelText(/buy bread/i);
     fireEvent.click(checkbox);
+
+    console.log(screen.getByText(/buy bread/i).style);
+    console.log(checkbox.style);
+
     expect(screen.getByText(/buy bread/i)).toHaveStyle({
       textDecoration: "line-through",
     });
