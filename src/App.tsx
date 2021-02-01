@@ -13,10 +13,7 @@ function App() {
   const [text, setText] = useState("");
 
   const addTodo = () => {
-    setTodos((prevState) => [
-      ...prevState,
-      { id: uid(), text, checked: false },
-    ]);
+    setTodos([...todos, { id: uid(), text, checked: false }]);
     setText("");
   };
 
@@ -30,6 +27,10 @@ function App() {
     setTodos(newListTodo);
   };
 
+  const deleteTodo = (id: string) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
   return (
     <div className="App">
       <input
@@ -38,7 +39,7 @@ function App() {
         onChange={(e) => setText(e.target.value)}
         placeholder="Add todo..."
       />
-      <ul data-testid="todos">
+      <ul aria-label="todos">
         {todos.map((todo) => (
           <li key={todo.id}>
             <label
@@ -47,13 +48,15 @@ function App() {
                 textDecoration: todo.checked ? "line-through" : undefined,
               }}
             >
-              {todo.text}
               <input
                 id="toggle"
                 type="checkbox"
-                data-testid="checkbox"
                 onChange={() => checkTodo(todo.id)}
               />
+              {todo.text}
+              <button type="button" onClick={() => deleteTodo(todo.id)}>
+                Delete
+              </button>
             </label>
           </li>
         ))}
