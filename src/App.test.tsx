@@ -49,9 +49,6 @@ describe("Todolist functionality", () => {
     const checkbox = screen.getByLabelText(/buy bread/i);
     fireEvent.click(checkbox);
 
-    console.log(screen.getByText(/buy bread/i).style);
-    console.log(checkbox.style);
-
     expect(screen.getByText(/buy bread/i)).toHaveStyle({
       textDecoration: "line-through",
     });
